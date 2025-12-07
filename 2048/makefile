@@ -2,7 +2,7 @@ CXX = g++
 
 TARGET = game
 
-SRCS = 2048.cpp board.cpp
+SRCS = main.cpp board.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
