@@ -46,8 +46,6 @@ vector<vector<int>> counterClockwise(vector<vector<int>>& board) {
             newBoard[N-1-c][r] = board[r][c];
         }
     }
-    // cout << "Counter Clockwise\n";
-    // displayBoard(newBoard);
     return newBoard;
 }
 
@@ -60,8 +58,6 @@ vector<vector<int>> clockwise(vector<vector<int>>& board) {
             newBoard[c][N-r-1] = board[r][c];
         }
     }
-    // cout << "Clockwise\n";
-    // displayBoard(newBoard);
     return newBoard;
 }
 
@@ -87,35 +83,38 @@ void addRandomTile(vector<vector<int>>& board) {
             if (board[r][c] == 0) empties.push_back({r,c});
         }
     }
-    
+    // Select cell to add tile to
     uniform_int_distribution<int> pick(0, empties.size()-1);
     pair<int,int> cell = empties[pick(rng)];
     int row = cell.first;
     int col = cell.second;
+    // Select number to put in cell (10% chance for num 4)
     uniform_int_distribution<int> ten(1,10);
     board[row][col] = (ten(rng) == 1 ? 4 : 2);
 }
 
 vector<vector<int>> makeMove(vector<vector<int>>& board, string direction) {
-    if (direction == "right") {
+    vector<vector<int>> tempBoard = board;
+    if (direction == "d") {
         board = clockwise(board);
         board = clockwise(board);
         board = slide(board);
         board = counterClockwise(board);
         board = counterClockwise(board);
-    } else if (direction == "down") {
+    } else if (direction == "s") {
         board = clockwise(board);
         board = slide(board);
         board = counterClockwise(board);
-    } else if (direction == "left") {
+    } else if (direction == "a") {
         board = slide(board);
-    } else if (direction == "up") {
+    } else if (direction == "w") {
         board = counterClockwise(board);
         board = slide(board);
         board = clockwise(board);
     } else {
         return board;
     }
+    if (tempBoard == board) return board;
     addRandomTile(board);
     return board;
 }
